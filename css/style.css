@@ -282,7 +282,7 @@ a.active {
 ==================================================*/
 
 #home {
-    background: url(../img/home-bg-2.jpg);
+    background: url(../img/ronback.jpeg);
     background-size: cover;
     height: 100vh;
 }
@@ -317,6 +317,29 @@ a.active {
     top: 40px;
     left: 50px;
     z-index: 1
+}
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 25px;
+    text-transform: uppercase;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-danger {
+    color: #dc3545;
+    border: 2px solid #dc3545;
+    background-color: transparent;
+}
+
+.btn-outline-danger:hover {
+    color: #fff;
+    background-color: #dc3545;
+    text-decoration: none;
 }
 
 
