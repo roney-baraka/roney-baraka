@@ -346,7 +346,7 @@ a.active {
 /* experience section
 ==================================================*/
 
-#experience {
+#experience-achievements {
     padding: 100px 0;
     background: #f3f3f3
 }
@@ -465,6 +465,19 @@ a.active {
     display: inline-block;
     margin-bottom: 1.2em;
     padding: 0.25em 1em 0.2em 1em;
+}
+
+/*Github Contributions Section 
+==================================================*/
+#github-contributions {
+    padding: 40px 0;
+    background-color: #f9f9f9;
+}
+
+canvas {
+    max-width: 100%;
+    height: auto;
+    margin: 20px auto;
 }
 
 
