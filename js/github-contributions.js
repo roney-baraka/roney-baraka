@@ -1,6 +1,10 @@
 const GITHUB_API_URL = "https://api.github.com/graphql";
-const GITHUB_TOKEN = "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";
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN; // Use an environment variable
 const GITHUB_USERNAME = "roney-baraka";
+
+if (!GITHUB_TOKEN) {
+    throw new Error("GitHub token is not defined in environment variables");
+}
 
 // GraphQL query
 const query = `
