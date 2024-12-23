@@ -470,16 +470,25 @@ a.active {
 /*Github Contributions Section 
 ==================================================*/
 #github-contributions {
-    padding: 40px 0;
-    background-color: #f9f9f9;
-}
-
-canvas {
-    max-width: 100%;
-    height: auto;
-    margin: 20px auto;
-}
-
+    margin: 20px 0;
+  }
+  
+  #contribution-graph {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  button {
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  button:hover {
+    background-color: #c0392b;
+  }
+  
 
 /* projects section
 ==================================================*/

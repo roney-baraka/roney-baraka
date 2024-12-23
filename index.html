@@ -182,23 +182,26 @@
     <!-- GitHub Contributions Section -->
     <div class="section" id="github-contributions">
         <div class="container">
-          <div class="col-md-12 text-center">
-            <h4>05</h4>
-            <h1 class="size-50">My <br> GitHub Contributions</h1>
-            <div class="mt-10">
-              <button class="bg-red text-white p-2 rounded mr-2">Current Year</button>
-              <button class="bg-red text-white p-2 rounded mr-2">Previous Year</button>
-              <button class="bg-red text-white p-2 rounded mr-2">Last Full Year</button>
+            <div class="col-md-12 text-center">
+                <h4>04</h4>
+                <h1 class="size-50">My <br> GitHub Contributions</h1>
+                <div class="mt-10">
+                    <button class="bg-red text-white p-2 rounded mr-2" id="current-year">Current Year</button>
+                    <button class="bg-red text-white p-2 rounded mr-2" id="previous-year">Previous Year</button>
+                    <button class="bg-red text-white p-2 rounded mr-2" id="last-full-year">Last Full Year</button>
+                </div>
+                <!-- Contribution Graph -->
+                <div id="contribution-graph">
+                    <svg id="contribution-svg" width="800" height="150"></svg>
+                </div>
+                <p class="mt-3">Contributions data provided by GitHub</p>
             </div>
-            <!-- Contribution Graph -->
-            <div id="contribution-graph">
-              <svg id="contribution-svg" width="800" height="150"></svg>
-            </div>
-            <p class="mt-3">Contributions data provided by GitHub</p>
-          </div>
         </div>
-      </div>
-      
+    </div>
+
+
+
+
 
 
     <!-- ./github contributions -->
@@ -468,8 +471,11 @@
     <!-- Axios -->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
+    <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="js/github-contributions.js"></script>
-    <script src="https://d3js.org/d3.v6.min.js"></script>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/aos@next/dist/aos.js"></script>
 
 
 

@@ -1,12 +1,15 @@
+// GraphQL API and Token
 const GITHUB_API_URL = "https://api.github.com/graphql";
-const GITHUB_TOKEN = process.env.GITHUB_TOKEN; // Use an environment variable
-const GITHUB_USERNAME = "roney-baraka";
+const GITHUB_TOKEN ="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"
 
+
+
+// Ensure GitHub token is available
 if (!GITHUB_TOKEN) {
-    throw new Error("GitHub token is not defined in environment variables");
+  throw new Error("GitHub token is missing. Add it to your environment variables or replace `your_personal_access_token`.");
 }
 
-// GraphQL query
+// GraphQL query to fetch contribution data
 const query = `
 query($username: String!, $from: DateTime!, $to: DateTime!) {
   user(login: $username) {
@@ -35,11 +38,15 @@ async function fetchGitHubContributions(username, from, to) {
       },
       body: JSON.stringify({
         query: query,
-        variables: { username: username, from: from, to: to },
+        variables: { username, from, to },
       }),
     });
 
     const result = await response.json();
+    if (result.errors) {
+      console.error("GitHub API Error:", result.errors);
+      return [];
+    }
     return result.data.user.contributionsCollection.contributionCalendar.weeks;
   } catch (error) {
     console.error("Error fetching GitHub contributions:", error);
@@ -47,70 +54,46 @@ async function fetchGitHubContributions(username, from, to) {
   }
 }
 
-// Render GitHub Contributions SVG
-async function drawContributionGraph(from, to) {
-  const weeks = await fetchGitHubContributions(GITHUB_USERNAME, from, to);
-
-  if (!weeks || weeks.length === 0) {
-    console.error("No contributions data available.");
-    return;
-  }
-
+// Render GitHub Contributions Graph
+async function drawContributionGraph(username, from, to) {
+  const weeks = await fetchGitHubContributions(username, from, to);
   const svg = d3.select("#contribution-svg");
   svg.selectAll("*").remove(); // Clear previous graph
 
-  const margin = { top: 20, right: 20, bottom: 20, left: 40 };
-  const width = +svg.attr("width") - margin.left - margin.right;
-  const height = +svg.attr("height") - margin.top - margin.bottom;
-
-  const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+  if (!weeks || weeks.length === 0) {
+    svg.append("text")
+      .attr("x", 10)
+      .attr("y", 50)
+      .text("No contribution data available.")
+      .style("fill", "red");
+    return;
+  }
 
   const days = weeks.flatMap((week) => week.contributionDays);
 
-  // Map data to grid positions
+  const width = 800;
+  const height = 150;
   const dayWidth = width / 53; // Assume 53 weeks
   const dayHeight = height / 7;
 
-  // Render the graph
-  g.selectAll("rect")
+  svg.selectAll("rect")
     .data(days)
     .enter()
     .append("rect")
-    .attr("x", (d, i) => Math.floor(i / 7) * dayWidth) // Columns (weeks)
-    .attr("y", (d, i) => (i % 7) * dayHeight) // Rows (days of the week)
+    .attr("x", (d, i) => Math.floor(i / 7) * dayWidth)
+    .attr("y", (d, i) => (i % 7) * dayHeight)
     .attr("width", dayWidth - 2)
     .attr("height", dayHeight - 2)
-    .style("fill", (d) => d.color)
+    .style("fill", (d) => d.color || "#eee")
     .append("title")
     .text((d) => `${d.date}: ${d.contributionCount} contributions`);
-
-  // Add month labels
-  const months = Array.from(new Set(days.map((d) => new Date(d.date).toLocaleString("en-US", { month: "short" }))));
-  months.forEach((month, i) => {
-    g.append("text")
-      .attr("x", i * (dayWidth * 4)) // Spacing for each month
-      .attr("y", -5) // Above the grid
-      .style("text-anchor", "middle")
-      .text(month);
-  });
-
-  // Add day labels (Monday, Wednesday, Friday)
-  ["Mon", "Wed", "Fri"].forEach((day, i) => {
-    g.append("text")
-      .attr("x", -10)
-      .attr("y", i * (dayHeight * 2) + 10)
-      .style("text-anchor", "end")
-      .text(day);
-  });
 }
 
-// Button functionality to update graph
-function setupButtons() {
-  const currentYearButton = document.querySelector("button:nth-child(1)");
-  const previousYearButton = document.querySelector("button:nth-child(2)");
-  const lastFullYearButton = document.querySelector("button:nth-child(3)");
-
+// Set up buttons and default graph
+document.addEventListener("DOMContentLoaded", () => {
+  const username = "roney-baraka"; // Replace with your GitHub username
   const today = new Date();
+
   const currentYearStart = new Date(today.getFullYear(), 0, 1).toISOString();
   const currentYearEnd = new Date(today.getFullYear(), 11, 31).toISOString();
 
@@ -120,17 +103,18 @@ function setupButtons() {
   const lastFullYearStart = new Date(today.getFullYear() - 1, today.getMonth(), today.getDate()).toISOString();
   const lastFullYearEnd = today.toISOString();
 
-  currentYearButton.addEventListener("click", () => drawContributionGraph(currentYearStart, currentYearEnd));
-  previousYearButton.addEventListener("click", () => drawContributionGraph(previousYearStart, previousYearEnd));
-  lastFullYearButton.addEventListener("click", () => drawContributionGraph(lastFullYearStart, lastFullYearEnd));
-}
+  document.getElementById("current-year").addEventListener("click", () => {
+    drawContributionGraph(username, currentYearStart, currentYearEnd);
+  });
 
-// Initialize graph and buttons
-document.addEventListener("DOMContentLoaded", () => {
-  const today = new Date();
-  const currentYearStart = new Date(today.getFullYear(), 0, 1).toISOString();
-  const currentYearEnd = new Date(today.getFullYear(), 11, 31).toISOString();
+  document.getElementById("previous-year").addEventListener("click", () => {
+    drawContributionGraph(username, previousYearStart, previousYearEnd);
+  });
 
-  drawContributionGraph(currentYearStart, currentYearEnd); // Default to current year
-  setupButtons();
+  document.getElementById("last-full-year").addEventListener("click", () => {
+    drawContributionGraph(username, lastFullYearStart, lastFullYearEnd);
+  });
+
+  // Default: Load contributions for the current year
+  drawContributionGraph(username, currentYearStart, currentYearEnd);
 });
