@@ -469,26 +469,110 @@ a.active {
 
 /*Github Contributions Section 
 ==================================================*/
+/* Parent container */
 #github-contributions {
-    margin: 20px 0;
-  }
-  
-  #contribution-graph {
+    text-align: center;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin: 20px auto;
+    width: 100%;
+    max-width: 1200px;
+}
+
+/* Contribution graph */
+#contribution-graph {
     margin-top: 20px;
     display: flex;
-    justify-content: center;
+    justify-content: center; /* Centers the graph horizontally */
     align-items: center;
-  }
-  
-  button {
+    overflow-x: auto; /* Allows horizontal scrolling if needed */
+    width: 100%;
+}
+
+/* SVG styles */
+#contribution-graph svg {
+    width: 100%; /* Stretches to the parent container */
+    max-width: 900px; /* Ensures a max width for large screens */
+    height: auto; /* Adapts height proportionally */
+    min-width: 500px;
+}
+
+/* Fixes for contribution grid dimensions */
+.contribution-calendar rect {
+    width: 12px; /* Increases the grid square size */
+    height: 12px;
+    margin: 2px; /* Adds spacing between squares */
+}
+
+/* Headings styling */
+#github-contributions h1,
+#github-contributions h4 {
+    color: #2c3e50;
+    font-family: 'Arial', sans-serif;
+    margin-bottom: 20px;
+}
+
+/* Buttons */
+button {
+    background-color: #bc0f0f;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 15px;
+    margin: 5px;
+    font-size: 1rem;
     cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  button:hover {
-    background-color: #c0392b;
-  }
-  
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+    background-color: #472eb3;
+    transform: scale(1.05);
+}
+
+button:disabled {
+    background-color: #dcdcdc;
+    color: #888;
+    cursor: not-allowed;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    #github-contributions {
+        width: 95%;
+        padding: 10px;
+    }
+
+    #contribution-graph svg {
+        width: 100%; /* Dynamically scales for smaller screens */
+        min-width: 320px;
+    }
+}
+
+@media (max-width: 480px) {
+    #contribution-graph svg {
+        width: auto;
+        min-width: 600px;
+        height: auto;
+    }
+    #github-contributions{
+        padding: 10px;
+    }
+    #contribution-graph {
+        overflow-x: scroll;
+    }
+    .contribution-calendar rect{
+        width: 8px;
+        height: 8px;
+    }
+
+    button {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}
 
 /* projects section
 ==================================================*/

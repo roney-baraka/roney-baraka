@@ -1,8 +1,6 @@
 // GraphQL API and Token
 const GITHUB_API_URL = "https://api.github.com/graphql";
-const GITHUB_TOKEN ="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"
-
-
+const GITHUB_TOKEN = "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";
 
 // Ensure GitHub token is available
 if (!GITHUB_TOKEN) {
@@ -37,26 +35,29 @@ async function fetchGitHubContributions(username, from, to) {
         Authorization: `Bearer ${GITHUB_TOKEN}`,
       },
       body: JSON.stringify({
-        query: query,
+        query,
         variables: { username, from, to },
       }),
     });
 
     const result = await response.json();
-    if (result.errors) {
-      console.error("GitHub API Error:", result.errors);
-      return [];
+
+    if (response.ok) {
+      return result.data.user.contributionsCollection.contributionCalendar.weeks;
+    } else {
+      console.error("Error fetching contributions:", result);
+      return null;
     }
-    return result.data.user.contributionsCollection.contributionCalendar.weeks;
   } catch (error) {
-    console.error("Error fetching GitHub contributions:", error);
-    return [];
+    console.error("Error:", error);
+    return null;
   }
 }
 
-// Render GitHub Contributions Graph
+// Draw the contributions graph
 async function drawContributionGraph(username, from, to) {
   const weeks = await fetchGitHubContributions(username, from, to);
+
   const svg = d3.select("#contribution-svg");
   svg.selectAll("*").remove(); // Clear previous graph
 
@@ -69,52 +70,102 @@ async function drawContributionGraph(username, from, to) {
     return;
   }
 
+  const margin = { top: 20, right: 20, bottom: 20, left: 40 };
+  const width = parseInt(svg.style("width")) - margin.left - margin.right;
+  const height = 150; // Fixed height for now
+
+  const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+
   const days = weeks.flatMap((week) => week.contributionDays);
 
-  const width = 800;
-  const height = 150;
-  const dayWidth = width / 53; // Assume 53 weeks
+  // Map data to grid positions
+  const dayWidth = width / 53; // Assume 53 weeks in a year
   const dayHeight = height / 7;
 
-  svg.selectAll("rect")
+  // Render the graph
+  g.selectAll("rect")
     .data(days)
     .enter()
     .append("rect")
-    .attr("x", (d, i) => Math.floor(i / 7) * dayWidth)
-    .attr("y", (d, i) => (i % 7) * dayHeight)
+    .attr("x", (d, i) => Math.floor(i / 7) * dayWidth) // Columns (weeks)
+    .attr("y", (d, i) => (i % 7) * dayHeight) // Rows (days of the week)
     .attr("width", dayWidth - 2)
     .attr("height", dayHeight - 2)
-    .style("fill", (d) => d.color || "#eee")
+    .style("fill", (d) => d.color || "#ebedf0")
     .append("title")
     .text((d) => `${d.date}: ${d.contributionCount} contributions`);
+
+  // Add month labels
+  const monthFormat = d3.timeFormat("%b");
+  const months = [...new Set(days.map((d) => d.date.slice(0, 7)))]; // Unique months
+
+  months.forEach((month, i) => {
+    g.append("text")
+      .attr("x", i * (width / 12)) // Position evenly
+      .attr("y", -5)
+      .style("text-anchor", "middle")
+      .text(monthFormat(new Date(`${month}-01`)));
+  });
+
+  // Add day labels
+  const dayLabels = ["Mon", "Wed", "Fri"];
+  dayLabels.forEach((day, i) => {
+    g.append("text")
+      .attr("x", -10)
+      .attr("y", (i * 2 + 1) * dayHeight - dayHeight / 2)
+      .style("text-anchor", "end")
+      .text(day);
+  });
 }
 
-// Set up buttons and default graph
+// Rate Limit Query
+const rateLimitQuery = `
+query {
+  rateLimit {
+    limit
+    remaining
+    resetAt
+  }
+}
+`;
+
+async function checkRateLimits() {
+  try {
+    const response = await fetch(GITHUB_API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${GITHUB_TOKEN}`,
+      },
+      body: JSON.stringify({ query: rateLimitQuery }),
+    });
+
+    const result = await response.json();
+
+    if (response.ok) {
+      const { limit, remaining, resetAt } = result.data.rateLimit;
+      console.log(`Rate Limit: ${limit}`);
+      console.log(`Remaining: ${remaining}`);
+      console.log(`Resets At: ${new Date(resetAt).toLocaleString()}`);
+    } else {
+      console.error("Error fetching rate limits:", result);
+    }
+  } catch (error) {
+    console.error("Error:", error);
+  }
+}
+
+// Event Listeners for Buttons
 document.addEventListener("DOMContentLoaded", () => {
-  const username = "roney-baraka"; // Replace with your GitHub username
+  const username = "roney-baraka";
   const today = new Date();
 
   const currentYearStart = new Date(today.getFullYear(), 0, 1).toISOString();
   const currentYearEnd = new Date(today.getFullYear(), 11, 31).toISOString();
 
-  const previousYearStart = new Date(today.getFullYear() - 1, 0, 1).toISOString();
-  const previousYearEnd = new Date(today.getFullYear() - 1, 11, 31).toISOString();
-
-  const lastFullYearStart = new Date(today.getFullYear() - 1, today.getMonth(), today.getDate()).toISOString();
-  const lastFullYearEnd = today.toISOString();
-
   document.getElementById("current-year").addEventListener("click", () => {
     drawContributionGraph(username, currentYearStart, currentYearEnd);
   });
 
-  document.getElementById("previous-year").addEventListener("click", () => {
-    drawContributionGraph(username, previousYearStart, previousYearEnd);
-  });
-
-  document.getElementById("last-full-year").addEventListener("click", () => {
-    drawContributionGraph(username, lastFullYearStart, lastFullYearEnd);
-  });
-
-  // Default: Load contributions for the current year
-  drawContributionGraph(username, currentYearStart, currentYearEnd);
+  drawContributionGraph(username, currentYearStart, currentYearEnd); // Default
 });
