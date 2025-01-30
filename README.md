@@ -56,7 +56,8 @@ _A full-stack marketplace built with Rails and React._
 
 ### 📈 GitHub Stats
 
-[![GitHub Streak](https://streak-stats.demolab.com/?user=roney-baraka&theme=dark)](https://git.io/streak-stats)  
+![GitHub Stats](https://github-readme-stats.vercel.app/api?username=roney-baraka&show_icons=true&theme=theme_name) 
+
 [![Top Languages](https://github-readme-stats.vercel.app/api/top-langs/?username=roney-baraka&layout=compact&theme=vision-friendly-dark)](https://github.com/anuraghazra/github-readme-stats)
 
 ---
