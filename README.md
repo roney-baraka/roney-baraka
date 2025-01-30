@@ -1,7 +1,7 @@
 # 👋 Hi, I'm Roney Baraka | Full-Stack Developer
 
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=flat&logo=linkedin&logoColor=white)](https://linkedin.com/in/yourprofile)
-[![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat&logo=github&logoColor=white)](https://github.com/yourusername)
+[![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat&logo=github&logoColor=white)](https://github.com/roney-baraka)
 [![Email](https://img.shields.io/badge/Email-D14836?style=flat&logo=gmail&logoColor=white)](mailto:barakaroney001@gmail.com)
 
 ### 💻 About Me
@@ -56,12 +56,12 @@ _A full-stack marketplace built with Rails and React._
 
 ### 📈 GitHub Stats
 
-[![GitHub Streak](https://streak-stats.demolab.com/?user=yourusername&theme=dark)](https://git.io/streak-stats)  
-[![Top Languages](https://github-readme-stats.vercel.app/api/top-langs/?username=yourusername&layout=compact&theme=vision-friendly-dark)](https://github.com/anuraghazra/github-readme-stats)
+[![GitHub Streak](https://streak-stats.demolab.com/?user=roney-baraka&theme=dark)](https://git.io/streak-stats)  
+[![Top Languages](https://github-readme-stats.vercel.app/api/top-langs/?username=roney-baraka&layout=compact&theme=vision-friendly-dark)](https://github.com/anuraghazra/github-readme-stats)
 
 ---
 
 ### 📫 Let’s Connect!
 - 💬 **Ask me about**: Full-stack development, AI workflows, or Ruby on Rails best practices!  
-- 📧 **Email**: [your.email@example.com](mailto:your.email@example.com)  
+- 📧 **Email**: [your.email@example.com](mailto:your.barakaroney001@gmail.com)  
 - 🐦 **Twitter**: [@yourhandle](https://twitter.com/yourhandle) *(optional)*  
