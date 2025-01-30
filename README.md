@@ -1,4 +1,5 @@
 # 👋 Hi, I'm Roney Baraka | Full-Stack Developer
+<img align='right' src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExdmRmMnloOXFvOHh4Z2Nra25vZmFlMHplNGlnNGEyam9zdzk5a3h5ayZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/RcsonxhFOqAdOiHeWB/giphy.gif" width="230" style="border-radius: 100px;">
 
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=flat&logo=linkedin&logoColor=white)](https://linkedin.com/in/yourprofile)
 [![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat&logo=github&logoColor=white)](https://github.com/roney-baraka)
